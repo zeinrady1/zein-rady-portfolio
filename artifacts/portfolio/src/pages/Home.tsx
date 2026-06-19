@@ -573,7 +573,6 @@ export default function Home() {
                   subtitle: "MAE 182 – Spacecraft GNC, UCSD | Final Exam Project, Jun 2026",
                   desc: "Implemented a sequential Extended Kalman Filter in MATLAB for the same 18-state orbit determination problem. Processes observations one at a time with segment-by-segment STM propagation via ode45. Uses the Joseph-form covariance update for numerical stability and back-propagates to t₀ after convergence. Validates against the batch solution via 1-σ error ellipsoid comparison.",
                   tools: ["MATLAB", "Extended Kalman Filter", "Numerical Integration", "Statistical Estimation", "Joseph Form"],
-                  report: "/reports/mae182-ekf-report.pdf",
                   github: "https://github.com/zeinrady1/MAE182-Orbit-Determination/tree/main/sequential-ekf"
                 },
                 {
