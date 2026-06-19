@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -306,14 +307,34 @@ export default function Home() {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [galleryTitle, setGalleryTitle] = useState("");
+  const [sending, setSending] = useState(false);
+  const contactFormRef = useRef<HTMLFormElement>(null);
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Transmission Sent",
-      description: "Message successfully relayed to command center.",
-    });
-    (e.target as HTMLFormElement).reset();
+    if (!contactFormRef.current) return;
+    setSending(true);
+    try {
+      await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        contactFormRef.current,
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+      toast({
+        title: "Transmission Sent",
+        description: "Message successfully relayed to command center.",
+      });
+      contactFormRef.current.reset();
+    } catch {
+      toast({
+        title: "Transmission Failed",
+        description: "Something went wrong — try emailing directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -746,12 +767,12 @@ export default function Home() {
               </a>
             </div>
 
-            <form onSubmit={handleContactSubmit} className="space-y-4 bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl">
-              <Input placeholder="Name" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-name" />
-              <Input type="email" placeholder="Email" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-email" />
-              <Textarea placeholder="Message" required rows={5} className="bg-secondary/50 border-border/50 focus-visible:ring-primary resize-none" data-testid="textarea-message" />
-              <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)]" data-testid="button-submit">
-                <Send className="w-4 h-4 mr-2" /> Send Message
+            <form ref={contactFormRef} onSubmit={handleContactSubmit} className="space-y-4 bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl">
+              <Input name="user_name" placeholder="Name" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-name" />
+              <Input name="user_email" type="email" placeholder="Email" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-email" />
+              <Textarea name="message" placeholder="Message" required rows={5} className="bg-secondary/50 border-border/50 focus-visible:ring-primary resize-none" data-testid="textarea-message" />
+              <Button type="submit" disabled={sending} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)]" data-testid="button-submit">
+                <Send className="w-4 h-4 mr-2" /> {sending ? "Sending…" : "Send Message"}
               </Button>
             </form>
           </motion.div>
