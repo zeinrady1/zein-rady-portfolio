@@ -265,8 +265,8 @@ const Navbar = () => {
   const navLinks = [
     { name: "About", href: "#about" },
     { name: "Education", href: "#education" },
-    { name: "Projects", href: "#projects" },
     { name: "Experience", href: "#experience" },
+    { name: "Projects", href: "#projects" },
     { name: "Skills", href: "#skills" },
     { name: "Contact", href: "#contact" },
   ];
@@ -365,11 +365,11 @@ export default function Home() {
                       <p className="text-sm font-semibold text-white group-hover:text-primary transition-colors">View Resume</p>
                     </div>
                   </a>
-                  <a href="mailto:radyzein2003@gmail.com" className="flex items-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
+                  <a href="mailto:radyzein2003@gmail.com" className="flex items-center gap-2 sm:gap-3 bg-card/70 backdrop-blur-md border border-border p-3 sm:p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group min-w-0 overflow-hidden">
                     <Mail className="w-5 h-5 text-primary shrink-0" />
-                    <div>
+                    <div className="min-w-0 overflow-hidden">
                       <p className="text-xs text-muted-foreground">Email</p>
-                      <p className="text-sm font-semibold text-white group-hover:text-primary transition-colors">radyzein2003@gmail.com</p>
+                      <p className="text-xs sm:text-sm font-semibold text-white group-hover:text-primary transition-colors truncate">radyzein2003@gmail.com</p>
                     </div>
                   </a>
                   <a href="tel:9495016098" className="flex items-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
@@ -418,7 +418,7 @@ export default function Home() {
             <SectionHeading>About Me</SectionHeading>
             <div className="bg-card/70 backdrop-blur-md border border-border p-8 md:p-12 rounded-2xl shadow-xl hover:border-primary/50 transition-colors duration-500">
               <p className="text-lg leading-relaxed text-muted-foreground">
-                I'm a junior at UC San Diego studying Aerospace Engineering with a specialization in Astrodynamics and Space Applications (GPA 3.7). My focus is on spacecraft guidance, navigation, and control, and I'm working toward a career in astrodynamics at organizations like NASA or SpaceX. I bring hands-on experience in CAD modeling, FEA simulation, embedded systems, and orbital mechanics research, alongside leadership roles in student engineering organizations.
+                I'm a junior at UC San Diego studying Aerospace Engineering with a specialization in Astrodynamics and Space Applications (GPA 3.70). My focus is on spacecraft guidance, navigation, and control, and I'm working toward a career in astrodynamics at organizations like NASA or SpaceX. I bring hands-on experience in CAD modeling, FEA simulation, embedded systems, and orbital mechanics research, alongside leadership roles in student engineering organizations.
               </p>
             </div>
           </motion.div>
@@ -447,6 +447,7 @@ export default function Home() {
                   degree: "Associates in Mathematics, Physics, Natural Sciences, and Liberal Arts",
                   gpa: "3.70",
                   date: "Aug 2021 – Jun 2024",
+                  details: "Relevant Coursework: Calculus I–III, Physics I–III (Mechanics & Electricity/Magnetism), SolidWorks CAD, MATLAB, C Programming"
                 },
                 {
                   title: "Certified SolidWorks CAD Design Associate",
@@ -466,6 +467,69 @@ export default function Home() {
                     </div>
                   </div>
                   {edu.details && <p className="text-sm text-muted-foreground">{edu.details}</p>}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Experience */}
+        <section id="experience" className="py-24 relative z-10 container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+          >
+            <SectionHeading>Experience</SectionHeading>
+            <div className="relative border-l-2 border-primary/30 ml-4 md:ml-8 space-y-12">
+              {[
+                {
+                  title: "Treasurer",
+                  org: "Vertical Flight Society @ UCSD",
+                  date: "Oct 2025 – Jun 2026",
+                  desc: "Manage financial documentation, forecasts, and budget reports for VFS engineering operations at UCSD. Coordinate procurement, vendor communication, and UCSD-compliant reimbursements for club materials and components. Partner with project leads to strategically allocate funding across active engineering initiatives and mission milestones."
+                },
+                {
+                  title: "Behavioral Health Technician",
+                  org: "Nyansa Learning Corporation",
+                  date: "Jun 2025 – Sep 2025",
+                  desc: "Delivered structured ABA-based intervention sessions for children with developmental differences, facilitating growth in communication, language development, and academic skills. Collected and analyzed behavioral data in real time to adapt intervention strategies. Collaborated with therapists, supervisors, and families to ensure consistent, individualized program delivery across home, school, and community settings."
+                },
+                {
+                  title: "Lead Structural Designer",
+                  org: "Freelance Engineering Project",
+                  date: "Jun 2025 – Aug 2025",
+                  desc: "Engineered 6 modular freestanding structures in SolidWorks, each rated to 5,000 lbs live load with a minimum factor of safety of 4.5 (30,000 lbs combined capacity). Designed a relocatable treehouse-style viewing platform and a 6-ft elevated deck with integrated bar area. Performed FEA simulations (stress, strain, displacement) to validate structural integrity, and collaborated on-site with contractors and architects to align technical specs with build requirements."
+                },
+                {
+                  title: "Student Tutor",
+                  org: "Berktree Learning Center",
+                  date: "Jun 2024 – Sep 2024",
+                  desc: "Provided personalized academic support in Calculus, Algebra, Geometry, English, ACT, and SAT prep. Developed tailored lesson plans using adaptive teaching methods to foster confidence and problem-solving skills. Helped students improve understanding of complex concepts and achieve measurable academic progress."
+                },
+                {
+                  title: "Social Media Coordinator & Design Assistant",
+                  org: "Youngfield USA",
+                  date: "Feb 2023 – Jun 2024",
+                  desc: "Developed and executed targeted campaigns across Instagram, Facebook, and TikTok, driving engagement and expanding brand presence. Used analytics to refine content strategy aligned with brand values. Collaborated with the creative team as Clothing Design Assistant, contributing input on new collections, materials, and aesthetics."
+                },
+                {
+                  title: "Courtesy Clerk",
+                  org: "Ralphs Grocery Company",
+                  date: "Jun 2020 – Nov 2022",
+                  desc: "Delivered efficient customer service while managing grocery bagging, cart retrieval, and assistance with large items. Supported daily store operations through product restocking, delivery coordination, and maintaining a clean, organized workspace."
+                }
+              ].map((exp, idx) => (
+                <div key={idx} className="relative pl-8 md:pl-12" data-testid={`timeline-experience-${idx}`}>
+                  <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-background border-2 border-primary shadow-[0_0_12px_rgba(245,158,11,1)]" />
+                  <h3 className="text-xl font-bold text-white">{exp.title}</h3>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 mb-2">
+                    <span className="text-primary font-medium">{exp.org}</span>
+                    <span className="hidden sm:inline text-muted-foreground">•</span>
+                    <span className="text-sm text-muted-foreground">{exp.date}</span>
+                  </div>
+                  <p className="text-muted-foreground">{exp.desc}</p>
                 </div>
               ))}
             </div>
@@ -519,69 +583,6 @@ export default function Home() {
                       </span>
                     ))}
                   </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </section>
-
-        {/* Experience */}
-        <section id="experience" className="py-24 relative z-10 container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <SectionHeading>Experience</SectionHeading>
-            <div className="relative border-l-2 border-primary/30 ml-4 md:ml-8 space-y-12">
-              {[
-                {
-                  title: "Treasurer",
-                  org: "Vertical Flight Society @ UCSD",
-                  date: "Oct 2025 – Jun 2026",
-                  desc: "Manage financial documentation, forecasts, and budget reports for VFS engineering operations at UCSD. Coordinate procurement, vendor communication, and UCSD-compliant reimbursements for club materials and components. Partner with project leads to strategically allocate funding across active engineering initiatives and mission milestones."
-                },
-                {
-                  title: "Behavioral Health Technician",
-                  org: "Nyansa Learning Corporation",
-                  date: "Jun 2025 – Sep 2025",
-                  desc: "Delivered structured ABA-based intervention sessions for children with developmental differences, facilitating growth in communication, language development, and academic skills. Collected and analyzed behavioral data in real time to adapt intervention strategies. Collaborated with therapists, supervisors, and families to ensure consistent, individualized program delivery across home, school, and community settings."
-                },
-                {
-                  title: "Lead Structural Designer",
-                  org: "Freelance Engineering Project",
-                  date: "Jun 2025 – Aug 2025",
-                  desc: "Engineered 6 modular freestanding structures in SolidWorks — each rated to 5,000 lbs live load with a minimum factor of safety of 4.5 (30,000 lbs combined capacity). Designed a relocatable treehouse-style viewing platform and a 6-ft elevated deck with integrated bar area. Performed FEA simulations (stress, strain, displacement) to validate structural integrity, and collaborated on-site with contractors and architects to align technical specs with build requirements."
-                },
-                {
-                  title: "Student Tutor",
-                  org: "Berktree Learning Center",
-                  date: "Jun 2024 – Sep 2024",
-                  desc: "Provided personalized academic support in Calculus, Algebra, Geometry, English, ACT, and SAT prep. Developed tailored lesson plans using adaptive teaching methods to foster confidence and problem-solving skills. Helped students improve understanding of complex concepts and achieve measurable academic progress."
-                },
-                {
-                  title: "Social Media Coordinator & Design Assistant",
-                  org: "Youngfield USA",
-                  date: "Feb 2023 – Jun 2024",
-                  desc: "Developed and executed targeted campaigns across Instagram, Facebook, and TikTok, driving engagement and expanding brand presence. Used analytics to refine content strategy aligned with brand values. Collaborated with the creative team as Clothing Design Assistant, contributing input on new collections, materials, and aesthetics."
-                },
-                {
-                  title: "Courtesy Clerk",
-                  org: "Ralphs Grocery Company",
-                  date: "Jun 2020 – Nov 2022",
-                  desc: "Delivered efficient customer service while managing grocery bagging, cart retrieval, and assistance with large items. Supported daily store operations through product restocking, delivery coordination, and maintaining a clean, organized workspace."
-                }
-              ].map((exp, idx) => (
-                <div key={idx} className="relative pl-8 md:pl-12" data-testid={`timeline-experience-${idx}`}>
-                  <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-background border-2 border-primary shadow-[0_0_12px_rgba(245,158,11,1)]" />
-                  <h3 className="text-xl font-bold text-white">{exp.title}</h3>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 mb-2">
-                    <span className="text-primary font-medium">{exp.org}</span>
-                    <span className="hidden sm:inline text-muted-foreground">•</span>
-                    <span className="text-sm text-muted-foreground">{exp.date}</span>
-                  </div>
-                  <p className="text-muted-foreground">{exp.desc}</p>
                 </div>
               ))}
             </div>
