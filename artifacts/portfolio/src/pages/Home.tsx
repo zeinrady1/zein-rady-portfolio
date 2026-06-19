@@ -349,7 +349,7 @@ export default function Home() {
                   transition={{ duration: 0.9, delay: 0.25 }}
                   className="text-lg text-muted-foreground mb-8"
                 >
-                  Aerospace Engineering · Astrodynamics &amp; GNC
+                  Aerospace Engineering · Astrodynamics and Space
                 </motion.p>
 
                 <motion.div
@@ -358,7 +358,7 @@ export default function Home() {
                   transition={{ duration: 0.9, delay: 0.4 }}
                   className="grid grid-cols-2 gap-3"
                 >
-                  <a href="#" className="flex items-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
+                  <a href="/resume.html" target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
                     <FileText className="w-5 h-5 text-primary shrink-0" />
                     <div>
                       <p className="text-xs text-muted-foreground">Resume</p>
@@ -438,7 +438,7 @@ export default function Home() {
                 {
                   title: "University of California, San Diego",
                   degree: "B.S. Aerospace Engineering, Specialization in Astrodynamics and Space Applications",
-                  gpa: "3.7",
+                  gpa: "3.70",
                   date: "Sep 2024 – Jun 2027",
                   details: "Relevant Coursework: Orbital Mechanics, Spacecraft Guidance & Navigation, Flight Simulation Techniques, Advanced Fluid Mechanics, Signals & Systems, Linear Control, Thermodynamics, Probability & Statistics for Engineers"
                 },
@@ -601,7 +601,7 @@ export default function Home() {
               <div className="bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl hover:border-primary/40 transition-colors">
                 <h3 className="text-xl font-bold text-white mb-6">Technical Skills</h3>
                 <div className="flex flex-wrap gap-3">
-                  {["MATLAB", "SolidWorks", "OpenRocket", "FEA Analysis", "3D CAD Modeling", "3D Printing", "Arduino", "Soldering & Wiring", "Excel", "C Programming", "Data Analysis & Visualization"].map((skill) => (
+                  {["MATLAB", "SolidWorks", "OpenRocket", "Structural Engineering", "FEA Analysis", "3D CAD Modeling", "CAD Documentation", "3D Printing", "Arduino", "Soldering & Wiring", "Excel", "C Programming", "Data Analysis & Visualization", "GitHub", "Project Management"].map((skill) => (
                     <span key={skill} className="px-4 py-2 bg-secondary/80 text-sm rounded-lg text-primary border border-primary/20 hover:border-primary hover:shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all cursor-default" data-testid={`tag-skill-${skill}`}>
                       {skill}
                     </span>
@@ -611,7 +611,7 @@ export default function Home() {
               <div className="bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl hover:border-white/20 transition-colors">
                 <h3 className="text-xl font-bold text-white mb-6">Soft Skills</h3>
                 <div className="flex flex-wrap gap-3">
-                  {["Leadership", "Cross-functional Collaboration", "Analytical Problem-Solving", "Attention to Detail", "Communication", "Adaptability", "Time Management", "Team Coordination"].map((skill) => (
+                  {["Leadership", "Problem Solving", "Critical Thinking", "Cross-functional Collaboration", "Analytical Problem-Solving", "Attention to Detail", "Communication", "Adaptability", "Time Management", "Team Coordination", "Teamwork", "Public Speaking", "Creative Collaboration", "Multitasking", "Organization", "Emotional Intelligence"].map((skill) => (
                     <span key={skill} className="px-4 py-2 bg-secondary/80 text-sm rounded-lg text-white border border-border hover:border-white/40 transition-all cursor-default" data-testid={`tag-softskill-${skill}`}>
                       {skill}
                     </span>
