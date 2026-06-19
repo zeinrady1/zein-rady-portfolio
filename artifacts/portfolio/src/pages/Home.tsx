@@ -579,7 +579,17 @@ export default function Home() {
                   title: "High-Powered Rocket – Proxima (RPL @ UCSD)",
                   subtitle: "Lead Design Engineer | Oct 2024 – Jun 2025",
                   desc: "Led multidisciplinary team design of a high-powered rocket from scratch. Used SolidWorks for full CAD modeling and OpenRocket for aerodynamic simulations. Performed iterative design to optimize structural stability and maximize altitude. Manufactured components via 3D printing and launched successfully.",
-                  tools: ["SolidWorks", "OpenRocket", "3D Printing", "Structural Analysis"]
+                  tools: ["SolidWorks", "OpenRocket", "3D Printing", "Structural Analysis"],
+                  report: "/reports/proxima-cdr.pdf",
+                  coverImage: "/images/proxima/IMG_8165.jpg",
+                  images: [
+                    "/images/proxima/IMG_8165.jpg",
+                    "/images/proxima/IMG_8167.jpg",
+                    "/images/proxima/IMG_6281.jpg",
+                    "/images/proxima/IMG_6282.jpg",
+                    "/images/proxima/IMG_6283.jpg",
+                    "/images/proxima/IMG_6321.jpg",
+                  ]
                 },
                 {
                   title: "Autonomous Quadcopter – DBVF @ UCSD",
