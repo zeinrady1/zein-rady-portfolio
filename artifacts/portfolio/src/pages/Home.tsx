@@ -1,30 +1,27 @@
-import { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Linkedin, Download, Rocket, Send } from "lucide-react";
+import { Mail, Linkedin, Download, Send } from "lucide-react";
 
 const Starfield = () => {
   const [stars, setStars] = useState<{ id: number; x: number; y: number; size: number; duration: number }[]>([]);
 
   useEffect(() => {
-    const generateStars = () => {
-      const newStars = Array.from({ length: 200 }).map((_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 2 + 0.5,
-        duration: Math.random() * 3 + 2,
-      }));
-      setStars(newStars);
-    };
-    generateStars();
+    const newStars = Array.from({ length: 220 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 2 + 0.4,
+      duration: Math.random() * 3 + 1.5,
+    }));
+    setStars(newStars);
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[-1] overflow-hidden bg-background pointer-events-none">
+    <div className="fixed inset-0 z-0 overflow-hidden bg-background pointer-events-none">
       {stars.map((star) => (
         <motion.div
           key={star.id}
@@ -34,18 +31,232 @@ const Starfield = () => {
             top: `${star.y}%`,
             width: `${star.size}px`,
             height: `${star.size}px`,
-            opacity: 0.8,
           }}
-          animate={{
-            opacity: [0.2, 0.8, 0.2],
-          }}
-          transition={{
-            duration: star.duration,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          animate={{ opacity: [0.15, 0.9, 0.15] }}
+          transition={{ duration: star.duration, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
+    </div>
+  );
+};
+
+const EarthScene = () => {
+  const [scrollAngle, setScrollAngle] = useState(0);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+        setScrollAngle(progress * 720);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  const orbitRx = 220;
+  const orbitRy = 140;
+  const angleRad = (scrollAngle * Math.PI) / 180;
+  const rocketX = Math.cos(angleRad) * orbitRx;
+  const rocketY = Math.sin(angleRad) * orbitRy;
+  const tangentAngle = Math.atan2(
+    -orbitRy * Math.cos(angleRad),
+    orbitRx * -Math.sin(angleRad)
+  );
+  const rocketDeg = (tangentAngle * 180) / Math.PI;
+
+  return (
+    <div className="fixed inset-0 z-1 pointer-events-none flex items-center justify-center">
+      <div className="relative flex items-center justify-center" style={{ width: 500, height: 500 }}>
+
+        {/* Orbit ellipse ring */}
+        <svg
+          className="absolute"
+          width="500"
+          height="500"
+          viewBox="-250 -250 500 500"
+          style={{ opacity: 0.12 }}
+        >
+          <ellipse cx="0" cy="0" rx={orbitRx} ry={orbitRy} fill="none" stroke="white" strokeWidth="1" strokeDasharray="4 6" />
+        </svg>
+
+        {/* Earth */}
+        <div className="relative" style={{ width: 240, height: 240 }}>
+          <svg
+            width="240"
+            height="240"
+            viewBox="0 0 240 240"
+            style={{ borderRadius: "50%", overflow: "hidden", display: "block" }}
+          >
+            <defs>
+              {/* Ocean gradient */}
+              <radialGradient id="oceanGrad" cx="38%" cy="35%" r="65%">
+                <stop offset="0%" stopColor="#1e5fa8" />
+                <stop offset="40%" stopColor="#0d3d7a" />
+                <stop offset="100%" stopColor="#061e3c" />
+              </radialGradient>
+              {/* Atmosphere rim gradient */}
+              <radialGradient id="atmGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="75%" stopColor="transparent" />
+                <stop offset="90%" stopColor="#3b82f680" />
+                <stop offset="100%" stopColor="#60a5fa60" />
+              </radialGradient>
+              {/* Specular highlight */}
+              <radialGradient id="specGrad" cx="35%" cy="30%" r="35%">
+                <stop offset="0%" stopColor="#ffffff30" />
+                <stop offset="100%" stopColor="transparent" />
+              </radialGradient>
+              {/* Cloud gradient */}
+              <radialGradient id="cloudGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#ffffff55" />
+                <stop offset="100%" stopColor="transparent" />
+              </radialGradient>
+              <clipPath id="earthClip">
+                <circle cx="120" cy="120" r="118" />
+              </clipPath>
+            </defs>
+
+            {/* Ocean base */}
+            <circle cx="120" cy="120" r="118" fill="url(#oceanGrad)" />
+
+            {/* === CONTINENTS === */}
+            <g clipPath="url(#earthClip)">
+              {/* Africa */}
+              <path
+                d="M 148,65 C 162,62 175,70 178,88 C 181,105 176,125 172,145 C 168,165 160,185 148,195 C 136,205 122,200 116,185 C 110,170 112,148 118,128 C 124,108 128,90 135,78 C 140,70 144,66 148,65 Z"
+                fill="#2d7a3a" opacity="0.9"
+              />
+              {/* Madagascar */}
+              <path
+                d="M 183,155 C 188,152 193,158 192,168 C 191,178 184,182 179,178 C 174,174 174,164 178,158 Z"
+                fill="#2d7a3a" opacity="0.85"
+              />
+              {/* South America */}
+              <path
+                d="M 72,95 C 86,88 100,92 104,110 C 108,128 106,155 98,175 C 90,195 74,205 60,198 C 46,190 40,168 44,145 C 48,122 55,105 65,97 Z"
+                fill="#3a8a45" opacity="0.88"
+              />
+              {/* North America (partial) */}
+              <path
+                d="M 28,30 C 52,22 80,28 92,50 C 104,70 100,96 84,104 C 68,112 44,104 30,85 C 16,66 12,38 28,30 Z"
+                fill="#3a8545" opacity="0.82"
+              />
+              {/* Eurasia */}
+              <path
+                d="M 100,28 C 130,15 170,18 195,35 C 218,50 228,75 220,95 C 212,115 185,122 158,118 C 130,114 105,100 92,80 C 80,60 80,38 100,28 Z"
+                fill="#2d7a3a" opacity="0.88"
+              />
+              {/* India sub */}
+              <path
+                d="M 178,105 C 185,100 192,108 190,122 C 188,136 178,142 170,136 C 162,130 162,115 170,108 Z"
+                fill="#3a8a40" opacity="0.8"
+              />
+              {/* Australia */}
+              <path
+                d="M 195,168 C 215,162 230,172 228,188 C 226,204 208,212 192,206 C 178,200 174,185 180,175 C 184,168 190,170 195,168 Z"
+                fill="#4a9a50" opacity="0.82"
+              />
+              {/* Antarctica hint */}
+              <path
+                d="M 40,218 C 80,208 160,205 200,215 C 220,220 230,232 220,240 L 20,240 C 10,232 20,222 40,218 Z"
+                fill="#d0e8f0" opacity="0.5"
+              />
+
+              {/* Cloud patches */}
+              <ellipse cx="85" cy="55" rx="30" ry="12" fill="#ffffff" opacity="0.18" transform="rotate(-20 85 55)" />
+              <ellipse cx="160" cy="80" rx="22" ry="9" fill="#ffffff" opacity="0.15" transform="rotate(10 160 80)" />
+              <ellipse cx="55" cy="140" rx="26" ry="10" fill="#ffffff" opacity="0.14" transform="rotate(-15 55 140)" />
+              <ellipse cx="130" cy="170" rx="20" ry="8" fill="#ffffff" opacity="0.12" transform="rotate(5 130 170)" />
+              <ellipse cx="200" cy="130" rx="18" ry="7" fill="#ffffff" opacity="0.13" transform="rotate(-8 200 130)" />
+              <ellipse cx="105" cy="215" rx="28" ry="9" fill="#ffffff" opacity="0.1" transform="rotate(3 105 215)" />
+            </g>
+
+            {/* Atmosphere rim overlay */}
+            <circle cx="120" cy="120" r="118" fill="url(#atmGrad)" />
+            {/* Specular highlight */}
+            <circle cx="120" cy="120" r="118" fill="url(#specGrad)" />
+          </svg>
+
+          {/* Atmospheric glow rings */}
+          <div className="absolute inset-0 rounded-full"
+            style={{ boxShadow: "0 0 40px 12px rgba(59,130,246,0.35), 0 0 80px 30px rgba(37,99,235,0.18), 0 0 0 3px rgba(96,165,250,0.25)" }} />
+        </div>
+
+        {/* Rocket + flame at orbit position */}
+        <div
+          className="absolute"
+          style={{
+            left: "50%",
+            top: "50%",
+            transform: `translate(calc(-50% + ${rocketX}px), calc(-50% + ${rocketY}px))`,
+          }}
+        >
+          <div
+            style={{
+              transform: `rotate(${rocketDeg + 90}deg)`,
+              transformOrigin: "center center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {/* Flame — below rocket body */}
+            <motion.div
+              style={{
+                width: 10,
+                height: 28,
+                background: "linear-gradient(to bottom, #f97316, #fbbf24, transparent)",
+                borderRadius: "0 0 50% 50%",
+                filter: "blur(3px)",
+                order: 2,
+              }}
+              animate={{ scaleY: [1, 1.3, 0.85, 1.15, 1], scaleX: [1, 0.85, 1.1, 0.9, 1] }}
+              transition={{ duration: 0.4, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Glow behind flame */}
+            <motion.div
+              style={{
+                position: "absolute",
+                bottom: -8,
+                width: 18,
+                height: 18,
+                background: "radial-gradient(circle, rgba(251,191,36,0.7) 0%, transparent 70%)",
+                filter: "blur(5px)",
+              }}
+              animate={{ opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 0.35, repeat: Infinity }}
+            />
+            {/* Rocket SVG */}
+            <svg
+              width="22"
+              height="46"
+              viewBox="0 0 22 46"
+              style={{ order: 1, filter: "drop-shadow(0 0 6px rgba(251,191,36,0.9))" }}
+            >
+              {/* Nose cone */}
+              <path d="M 11 2 L 18 16 L 4 16 Z" fill="#e2e8f0" />
+              {/* Body */}
+              <rect x="5" y="14" width="12" height="18" rx="2" fill="#cbd5e1" />
+              {/* Window */}
+              <circle cx="11" cy="21" r="3" fill="#7dd3fc" stroke="#93c5fd" strokeWidth="1" />
+              {/* Left fin */}
+              <path d="M 5 28 L 0 40 L 7 34 Z" fill="#94a3b8" />
+              {/* Right fin */}
+              <path d="M 17 28 L 22 40 L 15 34 Z" fill="#94a3b8" />
+              {/* Engine nozzle */}
+              <rect x="7" y="32" width="8" height="5" rx="1" fill="#64748b" />
+              {/* Accent stripe */}
+              <rect x="5" y="22" width="12" height="2" fill="#f97316" opacity="0.8" />
+            </svg>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -83,72 +294,6 @@ const Navbar = () => {
   );
 };
 
-const Hero = () => {
-  const { scrollYProgress } = useScroll();
-  const orbitAngle = useTransform(scrollYProgress, [0, 1], [0, 360]);
-
-  return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        {/* Earth */}
-        <div className="relative w-64 h-64 md:w-96 md:h-96 rounded-full bg-gradient-to-br from-blue-600 via-blue-900 to-slate-900 shadow-[0_0_80px_rgba(37,99,235,0.4)] border border-blue-500/20" />
-        
-        {/* Orbit container */}
-        <motion.div
-          className="absolute w-[350px] h-[350px] md:w-[600px] md:h-[600px] border border-white/5 rounded-full"
-          style={{ rotate: orbitAngle }}
-        >
-          {/* Rocket */}
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 rotate-90 text-primary">
-            <Rocket className="w-8 h-8 md:w-10 md:h-10 fill-primary drop-shadow-[0_0_10px_rgba(245,158,11,1)]" />
-            <div className="absolute top-full left-1/2 -translate-x-1/2 w-2 h-16 bg-gradient-to-b from-orange-500 to-transparent blur-sm animate-pulse" />
-          </div>
-        </motion.div>
-      </div>
-
-      <div className="container relative z-10 text-center px-4">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]"
-        >
-          Zein Rady
-        </motion.h1>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-2xl md:text-3xl font-medium text-primary mb-6"
-        >
-          Aerospace Engineering Student | Astrodynamics & GNC
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="max-w-2xl mx-auto text-lg text-muted-foreground mb-10"
-        >
-          Pursuing spacecraft guidance, navigation, and orbital mechanics with a focus on real-world mission applications.
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex justify-center gap-4"
-        >
-          <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(245,158,11,0.4)]">
-            <a href="#projects">View My Work</a>
-          </Button>
-          <Button asChild size="lg" variant="outline" className="border-border hover:bg-secondary">
-            <a href="#contact">Contact Me</a>
-          </Button>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
-
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
   <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 flex items-center gap-4">
     <span className="h-px bg-primary w-12 shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
@@ -171,10 +316,52 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-transparent font-sans">
       <Starfield />
+      <EarthScene />
       <Navbar />
-      
+
       <main>
-        <Hero />
+        {/* Hero */}
+        <section className="relative min-h-screen flex items-center justify-center pt-16 z-10">
+          <div className="container relative text-center px-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9 }}
+              className="text-5xl md:text-8xl font-bold text-white mb-6 drop-shadow-[0_0_20px_rgba(245,158,11,0.3)] tracking-tight"
+            >
+              Zein Rady
+            </motion.h1>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.2 }}
+              className="text-xl md:text-3xl font-medium text-primary mb-6"
+            >
+              Aerospace Engineering Student | Astrodynamics & GNC
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.4 }}
+              className="max-w-2xl mx-auto text-lg text-muted-foreground mb-10"
+            >
+              Pursuing spacecraft guidance, navigation, and orbital mechanics with a focus on real-world mission applications.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.6 }}
+              className="flex justify-center gap-4 flex-wrap"
+            >
+              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(245,158,11,0.5)]" data-testid="button-view-work">
+                <a href="#projects">View My Work</a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" data-testid="button-contact">
+                <a href="#contact">Contact Me</a>
+              </Button>
+            </motion.div>
+          </div>
+        </section>
 
         {/* About */}
         <section id="about" className="py-24 relative z-10 container mx-auto px-4">
@@ -185,7 +372,7 @@ export default function Home() {
             transition={{ duration: 0.6 }}
           >
             <SectionHeading>About Me</SectionHeading>
-            <div className="bg-card/50 backdrop-blur-sm border border-border p-8 md:p-12 rounded-2xl shadow-xl hover:border-primary/50 transition-colors duration-500">
+            <div className="bg-card/70 backdrop-blur-md border border-border p-8 md:p-12 rounded-2xl shadow-xl hover:border-primary/50 transition-colors duration-500">
               <p className="text-lg leading-relaxed text-muted-foreground">
                 I'm a junior at UC San Diego studying Aerospace Engineering with a specialization in Astrodynamics and Space Applications (GPA 3.7). My focus is on spacecraft guidance, navigation, and control, and I'm working toward a career in astrodynamics at organizations like NASA or SpaceX. I bring hands-on experience in CAD modeling, FEA simulation, embedded systems, and orbital mechanics research, alongside leadership roles in student engineering organizations.
               </p>
@@ -223,13 +410,13 @@ export default function Home() {
                   date: "Aug 2024",
                 }
               ].map((edu, idx) => (
-                <div key={idx} className="bg-card/40 border border-border p-6 rounded-xl hover:border-primary/50 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] transition-all duration-300">
+                <div key={idx} className="bg-card/70 backdrop-blur-md border border-border p-6 rounded-xl hover:border-primary/50 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] transition-all duration-300" data-testid={`card-education-${idx}`}>
                   <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-4">
                     <div>
                       <h3 className="text-xl font-bold text-white">{edu.title}</h3>
                       <p className="text-primary mt-1">{edu.degree}</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right shrink-0">
                       <span className="text-sm text-muted-foreground block">{edu.date}</span>
                       {edu.gpa && <span className="text-sm font-medium text-white block mt-1">GPA: {edu.gpa}</span>}
                     </div>
@@ -254,7 +441,7 @@ export default function Home() {
               {[
                 {
                   title: "MATLAB Orbit Determination",
-                  subtitle: "Course: MAE 182 - Spacecraft Guidance & Navigation, UCSD",
+                  subtitle: "Course: MAE 182 – Spacecraft Guidance & Navigation, UCSD",
                   desc: "Developed a batch least-squares orbit determination program in MATLAB that processed simulated range and range-rate measurements from three ground stations to estimate spacecraft position and velocity. Achieved millimeter-level accuracy in position estimation through iterative statistical refinement.",
                   tools: ["MATLAB", "Orbital Mechanics", "Batch Estimation", "Linear Algebra"]
                 },
@@ -271,19 +458,19 @@ export default function Home() {
                   tools: ["Pixhawk 4", "Arduino", "Avionics", "Embedded Systems", "Wiring"]
                 },
                 {
-                  title: "Freestanding Bleacher Structures",
+                  title: "Freestanding Bleacher Structures (Freelance)",
                   subtitle: "Lead Structural Designer | Jun 2025 – Aug 2025",
-                  desc: "Designed and modeled six custom freestanding bleacher-style structures in SolidWorks, each rated to support 5,000 lbs of live load with a minimum factor of safety of 4.5. Performed FEA simulations for stress, strain, and displacement. Worked directly with contractors and architects on-site.",
+                  desc: "Designed and modeled six custom freestanding bleacher-style structures in SolidWorks, each rated to support 5,000 lbs of live load with a minimum factor of safety of 4.5 (30,000 lbs total capacity). Performed FEA simulations for stress, strain, and displacement. Worked directly with contractors and architects on-site.",
                   tools: ["SolidWorks", "FEA", "Structural Engineering", "CAD Documentation"]
                 }
               ].map((proj, idx) => (
-                <div key={idx} className="group bg-card/60 backdrop-blur-sm border border-border p-6 rounded-2xl hover:border-primary transition-all duration-300 hover:shadow-[0_0_30px_rgba(245,158,11,0.2)] flex flex-col h-full">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{proj.title}</h3>
-                  <p className="text-sm font-medium text-muted-foreground mb-4">{proj.subtitle}</p>
-                  <p className="text-muted-foreground mb-6 flex-grow">{proj.desc}</p>
+                <div key={idx} className="group bg-card/70 backdrop-blur-md border border-border p-6 rounded-2xl hover:border-primary transition-all duration-300 hover:shadow-[0_0_35px_rgba(245,158,11,0.25)] flex flex-col h-full" data-testid={`card-project-${idx}`}>
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{proj.title}</h3>
+                  <p className="text-sm font-medium text-primary/80 mb-4">{proj.subtitle}</p>
+                  <p className="text-muted-foreground mb-6 flex-grow text-sm leading-relaxed">{proj.desc}</p>
                   <div className="flex flex-wrap gap-2 mt-auto">
                     {proj.tools.map((tool) => (
-                      <span key={tool} className="px-3 py-1 bg-secondary text-xs rounded-full text-white border border-border/50">
+                      <span key={tool} className="px-3 py-1 bg-secondary/80 text-xs rounded-full text-primary border border-primary/20 hover:border-primary/60 transition-colors">
                         {tool}
                       </span>
                     ))}
@@ -309,35 +496,35 @@ export default function Home() {
                   title: "Treasurer",
                   org: "Vertical Flight Society @ UCSD",
                   date: "Oct 2025 – Jun 2026",
-                  desc: "Maintained financial documentation, forecasts, and budget reports for engineering operations. Tracked expenditures, analyzed cost trends, and prepared summaries for leadership."
+                  desc: "Maintained financial documentation, forecasts, and budget reports for engineering operations. Tracked expenditures, analyzed cost trends, and prepared summaries for leadership. Coordinated vendor orders and deliveries following UCSD financial procedures."
                 },
                 {
                   title: "Behavior Technician",
                   org: "Nyansa Learning Corporation",
                   date: "Jun 2025 – Sep 2025",
-                  desc: "Followed structured procedures and maintained detailed electronic records. Communicated across teams to ensure consistent program delivery."
+                  desc: "Followed structured procedures and maintained detailed electronic records. Communicated across teams to ensure consistent program delivery. Adapted problem-solving strategies based on observed outcomes."
                 },
                 {
                   title: "Lead Structural Designer",
                   org: "Freelance",
                   date: "Jun 2025 – Aug 2025",
-                  desc: "Designed load-bearing structures in SolidWorks, performed FEA, created engineering documentation, and collaborated with contractors."
+                  desc: "Designed load-bearing structures in SolidWorks, performed FEA, created engineering documentation, and collaborated with contractors in real-world build environments."
                 },
                 {
                   title: "Tutor",
                   org: "Berktree Learning Center",
                   date: "Jun 2024 – Sep 2024",
-                  desc: "Tutored students in Calculus, Algebra, Geometry, English, ACT, and SAT prep."
+                  desc: "Tutored students in Calculus, Algebra, Geometry, English, ACT, and SAT. Developed tailored lesson plans and improved student performance through personalized instruction."
                 },
                 {
                   title: "Social Media Head",
                   org: "Youngfield USA",
                   date: "Feb 2023 – Jun 2024",
-                  desc: "Led social media strategy across Instagram, Facebook, and TikTok. Coordinated product launches and influencer partnerships."
+                  desc: "Led social media strategy across Instagram, Facebook, and TikTok. Coordinated product launches, influencer partnerships, and creative campaigns."
                 }
               ].map((exp, idx) => (
-                <div key={idx} className="relative pl-8 md:pl-12">
-                  <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-background border-2 border-primary shadow-[0_0_10px_rgba(245,158,11,1)]" />
+                <div key={idx} className="relative pl-8 md:pl-12" data-testid={`timeline-experience-${idx}`}>
+                  <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-background border-2 border-primary shadow-[0_0_12px_rgba(245,158,11,1)]" />
                   <h3 className="text-xl font-bold text-white">{exp.title}</h3>
                   <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 mb-2">
                     <span className="text-primary font-medium">{exp.org}</span>
@@ -361,21 +548,21 @@ export default function Home() {
           >
             <SectionHeading>Skills</SectionHeading>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-card/40 border border-border p-8 rounded-2xl">
-                <h3 className="text-2xl font-bold text-white mb-6">Technical Skills</h3>
+              <div className="bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl hover:border-primary/40 transition-colors">
+                <h3 className="text-xl font-bold text-white mb-6">Technical Skills</h3>
                 <div className="flex flex-wrap gap-3">
                   {["MATLAB", "SolidWorks", "OpenRocket", "FEA Analysis", "3D CAD Modeling", "3D Printing", "Arduino", "Soldering & Wiring", "Excel", "C Programming", "Data Analysis & Visualization"].map((skill) => (
-                    <span key={skill} className="px-4 py-2 bg-secondary text-sm rounded-lg text-primary border border-primary/20 hover:border-primary hover:shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all cursor-default">
+                    <span key={skill} className="px-4 py-2 bg-secondary/80 text-sm rounded-lg text-primary border border-primary/20 hover:border-primary hover:shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all cursor-default" data-testid={`tag-skill-${skill}`}>
                       {skill}
                     </span>
                   ))}
                 </div>
               </div>
-              <div className="bg-card/40 border border-border p-8 rounded-2xl">
-                <h3 className="text-2xl font-bold text-white mb-6">Soft Skills</h3>
+              <div className="bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl hover:border-white/20 transition-colors">
+                <h3 className="text-xl font-bold text-white mb-6">Soft Skills</h3>
                 <div className="flex flex-wrap gap-3">
                   {["Leadership", "Cross-functional Collaboration", "Analytical Problem-Solving", "Attention to Detail", "Communication", "Adaptability", "Time Management", "Team Coordination"].map((skill) => (
-                    <span key={skill} className="px-4 py-2 bg-secondary text-sm rounded-lg text-white border border-border hover:border-white/50 transition-all cursor-default">
+                    <span key={skill} className="px-4 py-2 bg-secondary/80 text-sm rounded-lg text-white border border-border hover:border-white/40 transition-all cursor-default" data-testid={`tag-softskill-${skill}`}>
                       {skill}
                     </span>
                   ))}
@@ -398,45 +585,38 @@ export default function Home() {
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Let's Connect</h2>
               <p className="text-lg text-muted-foreground">Open to internship and research opportunities in aerospace, GNC, and astrodynamics.</p>
             </div>
-            
+
             <div className="grid sm:grid-cols-2 gap-4 mb-8">
-              <a href="mailto:radyzein2003@gmail.com" className="flex items-center justify-center gap-3 bg-card/40 border border-border p-4 rounded-xl hover:border-primary transition-colors text-white hover:text-primary">
+              <a href="mailto:radyzein2003@gmail.com" className="flex items-center justify-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-colors text-white hover:text-primary" data-testid="link-email">
                 <Mail className="w-5 h-5" />
-                <span>radyzein2003@gmail.com</span>
+                <span className="text-sm">radyzein2003@gmail.com</span>
               </a>
-              <a href="https://linkedin.com/in/zein-rady-a3475227b" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-3 bg-card/40 border border-border p-4 rounded-xl hover:border-primary transition-colors text-white hover:text-primary">
+              <a href="https://linkedin.com/in/zein-rady-a3475227b" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-colors text-white hover:text-primary" data-testid="link-linkedin">
                 <Linkedin className="w-5 h-5" />
                 <span>LinkedIn Profile</span>
               </a>
             </div>
 
-            <form onSubmit={handleContactSubmit} className="space-y-4 bg-card/60 backdrop-blur-sm border border-border p-8 rounded-2xl">
-              <div>
-                <Input placeholder="Name" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" />
-              </div>
-              <div>
-                <Input type="email" placeholder="Email" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" />
-              </div>
-              <div>
-                <Textarea placeholder="Message" required rows={5} className="bg-secondary/50 border-border/50 focus-visible:ring-primary resize-none" />
-              </div>
-              <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+            <form onSubmit={handleContactSubmit} className="space-y-4 bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl">
+              <Input placeholder="Name" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-name" />
+              <Input type="email" placeholder="Email" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-email" />
+              <Textarea placeholder="Message" required rows={5} className="bg-secondary/50 border-border/50 focus-visible:ring-primary resize-none" data-testid="textarea-message" />
+              <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)]" data-testid="button-submit">
                 <Send className="w-4 h-4 mr-2" /> Send Message
               </Button>
             </form>
           </motion.div>
         </section>
-
       </main>
 
       <footer className="relative z-10 border-t border-border/50 bg-background/80 backdrop-blur-sm py-8">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-sm">Zein Rady © 2026</p>
           <div className="flex items-center gap-4">
-            <a href="https://linkedin.com/in/zein-rady-a3475227b" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="https://linkedin.com/in/zein-rady-a3475227b" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary transition-colors" data-testid="link-footer-linkedin">
               <Linkedin className="w-5 h-5" />
             </a>
-            <a href="mailto:radyzein2003@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="mailto:radyzein2003@gmail.com" className="text-muted-foreground hover:text-primary transition-colors" data-testid="link-footer-email">
               <Mail className="w-5 h-5" />
             </a>
           </div>
