@@ -303,7 +303,9 @@ const SectionHeading = ({ children }: { children: React.ReactNode }) => (
 
 export default function Home() {
   const { toast } = useToast();
-  const [expandedGalleryIdx, setExpandedGalleryIdx] = useState<number | null>(null);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [galleryTitle, setGalleryTitle] = useState("");
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -608,6 +610,13 @@ export default function Home() {
                     "/images/freelance/right_side.png",
                     "/images/freelance/screenshot_173417.png",
                     "/images/freelance/tree_structure_fos.png",
+                    "/images/freelance/IMG_1749.jpg",
+                    "/images/freelance/IMG_1748.jpg",
+                    "/images/freelance/IMG_1744.jpg",
+                    "/images/freelance/IMG_1743.jpg",
+                    "/images/freelance/IMG_1742.jpg",
+                    "/images/freelance/IMG_1741.jpg",
+                    "/images/freelance/IMG_1740.jpg",
                   ]
                 }
               ].map((proj, idx) => (
@@ -628,20 +637,11 @@ export default function Home() {
                   {proj.images && (
                     <div className="mt-4">
                       <button
-                        onClick={() => setExpandedGalleryIdx(expandedGalleryIdx === idx ? null : idx)}
-                        className="flex items-center gap-2 text-sm text-primary hover:text-primary/70 transition-colors font-medium"
+                        onClick={() => { setGalleryImages(proj.images!); setGalleryTitle(proj.title); setGalleryOpen(true); }}
+                        className="text-sm font-medium text-primary border border-primary/40 rounded-lg px-4 py-2 hover:bg-primary/10 hover:border-primary transition-all"
                       >
-                        <span>{expandedGalleryIdx === idx ? "▲ Show less" : `▼ View all ${proj.images.length} photos`}</span>
+                        View all {proj.images.length} photos
                       </button>
-                      {expandedGalleryIdx === idx && (
-                        <div className="grid grid-cols-2 gap-2 mt-3">
-                          {proj.images.map((img, i) => (
-                            <a key={i} href={img} target="_blank" rel="noreferrer">
-                              <img src={img} alt={`Project photo ${i + 1}`} className="w-full rounded-lg object-cover hover:opacity-80 transition-opacity cursor-zoom-in" />
-                            </a>
-                          ))}
-                        </div>
-                      )}
                     </div>
                   )}
                 </div>
@@ -724,6 +724,40 @@ export default function Home() {
           </motion.div>
         </section>
       </main>
+
+      {/* Photo gallery modal */}
+      {galleryOpen && (
+        <div
+          className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-sm flex items-start justify-center overflow-y-auto p-4 py-10"
+          onClick={() => setGalleryOpen(false)}
+        >
+          <div
+            className="bg-background border border-border rounded-2xl w-full max-w-5xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center mb-6 pb-4 border-b border-border">
+              <h3 className="text-xl font-bold text-white">{galleryTitle} – Project Photos</h3>
+              <button
+                onClick={() => setGalleryOpen(false)}
+                className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-white hover:bg-primary/20 hover:border-primary border border-transparent transition-all text-xl leading-none"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {galleryImages.map((img, i) => (
+                <a key={i} href={img} target="_blank" rel="noreferrer" className="block overflow-hidden rounded-xl">
+                  <img
+                    src={img}
+                    alt={`Photo ${i + 1}`}
+                    className="w-full object-cover hover:scale-[1.02] transition-transform duration-200 cursor-zoom-in"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="relative z-10 border-t border-border/50 bg-background/80 backdrop-blur-sm py-8">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
