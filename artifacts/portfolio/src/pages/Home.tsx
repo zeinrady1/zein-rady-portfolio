@@ -349,7 +349,7 @@ export default function Home() {
                   transition={{ duration: 0.9, delay: 0.25 }}
                   className="text-lg text-muted-foreground mb-8"
                 >
-                  Aerospace Engineering · Astrodynamics and Space
+                  Aerospace Engineering · Astrodynamics and Space Applications
                 </motion.p>
 
                 <motion.div
@@ -601,7 +601,7 @@ export default function Home() {
               <div className="bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl hover:border-primary/40 transition-colors">
                 <h3 className="text-xl font-bold text-white mb-6">Technical Skills</h3>
                 <div className="flex flex-wrap gap-3">
-                  {["MATLAB", "SolidWorks", "OpenRocket", "Structural Engineering", "FEA Analysis", "3D CAD Modeling", "CAD Documentation", "3D Printing", "Arduino", "Soldering & Wiring", "Excel", "C Programming", "Data Analysis & Visualization", "GitHub", "Project Management"].map((skill) => (
+                  {["MATLAB", "SolidWorks", "OpenRocket", "Structural Engineering", "FEA Analysis", "3D CAD Modeling", "CAD Documentation", "3D Printing", "Arduino", "Soldering & Wiring", "Excel", "C Programming", "Data Analysis & Visualization", "GitHub", "Project Management", "Claude AI", "ChatGPT"].map((skill) => (
                     <span key={skill} className="px-4 py-2 bg-secondary/80 text-sm rounded-lg text-primary border border-primary/20 hover:border-primary hover:shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all cursor-default" data-testid={`tag-skill-${skill}`}>
                       {skill}
                     </span>
