@@ -303,6 +303,7 @@ const SectionHeading = ({ children }: { children: React.ReactNode }) => (
 
 export default function Home() {
   const { toast } = useToast();
+  const [expandedGalleryIdx, setExpandedGalleryIdx] = useState<number | null>(null);
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -453,6 +454,8 @@ export default function Home() {
                   title: "Certified SolidWorks CAD Design Associate",
                   degree: "Certification",
                   date: "Aug 2024",
+                  certImage: "/solidworks-cert.png",
+                  certLink: "/solidworks-cert.pdf",
                 }
               ].map((edu, idx) => (
                 <div key={idx} className="bg-card/70 backdrop-blur-md border border-border p-6 rounded-xl hover:border-primary/50 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] transition-all duration-300" data-testid={`card-education-${idx}`}>
@@ -467,6 +470,14 @@ export default function Home() {
                     </div>
                   </div>
                   {edu.details && <p className="text-sm text-muted-foreground">{edu.details}</p>}
+                  {edu.certImage && (
+                    <div className="mt-4">
+                      <a href={edu.certLink} target="_blank" rel="noreferrer" className="inline-block group/cert">
+                        <img src={edu.certImage} alt="SolidWorks Certificate" className="max-h-72 rounded-lg border border-border/50 group-hover/cert:opacity-90 transition-opacity cursor-pointer" />
+                        <p className="text-xs text-muted-foreground mt-1 group-hover/cert:text-primary transition-colors">Click to view full certificate</p>
+                      </a>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -569,20 +580,70 @@ export default function Home() {
                   title: "Freestanding Bleacher Structures (Freelance)",
                   subtitle: "Lead Structural Designer | Jun 2025 – Aug 2025",
                   desc: "Designed and modeled six custom freestanding bleacher-style structures in SolidWorks, each rated to support 5,000 lbs of live load with a minimum factor of safety of 4.5 (30,000 lbs total capacity). Performed FEA simulations for stress, strain, and displacement. Worked directly with contractors and architects on-site.",
-                  tools: ["SolidWorks", "FEA", "Structural Engineering", "CAD Documentation"]
+                  tools: ["SolidWorks", "FEA", "Structural Engineering", "CAD Documentation"],
+                  coverImage: "/images/freelance/FULL_ASSEMBLY.png",
+                  images: [
+                    "/images/freelance/bar_area_with_measurements.png",
+                    "/images/freelance/bar_area_withPlywood.png",
+                    "/images/freelance/screenshot_175846.png",
+                    "/images/freelance/HIGH_BOX_92.5_DIMENSIONS.png",
+                    "/images/freelance/HIGH_BOX_92.5_FOS_TOP.png",
+                    "/images/freelance/HIGH_BOX_92.5_FOS_BOTTOM.png",
+                    "/images/freelance/HIGH_BOX_147_DIMENSIONS.png",
+                    "/images/freelance/HIGH_BOX_147_FOS_TOP.png",
+                    "/images/freelance/HIGH_BOX_147_FOS_BOTTOM.png",
+                    "/images/freelance/LOW_BOX_92.5_DIMENSIONS.png",
+                    "/images/freelance/LOW_BOX_92.5_FOS_BOTTOM.png",
+                    "/images/freelance/LOW_BOX_92.5_FOS_TOP.png",
+                    "/images/freelance/LOW_BOX_147_DIMENSIONS.png",
+                    "/images/freelance/LOW_BOX_147_FOS_TOP.png",
+                    "/images/freelance/LOW_BOX_147_FOS_BOTTOM.png",
+                    "/images/freelance/MEDIUM_BOX_92.5_DIMENSIONS.png",
+                    "/images/freelance/MEDIUM_BOX_92.5_FOS_TOP.png",
+                    "/images/freelance/MEDIUM_BOX_92.5_FOS_BOTTOM.png",
+                    "/images/freelance/MEDIUM_BOX_147_DIMENSIONS.png",
+                    "/images/freelance/MEDIUM_BOX_147_FOS_BOTTOM.png",
+                    "/images/freelance/MEDIUM_BOX_147_FOS_TOP.png",
+                    "/images/freelance/left_side.png",
+                    "/images/freelance/right_side.png",
+                    "/images/freelance/screenshot_173417.png",
+                    "/images/freelance/tree_structure_fos.png",
+                  ]
                 }
               ].map((proj, idx) => (
-                <div key={idx} className="group bg-card/70 backdrop-blur-md border border-border p-6 rounded-2xl hover:border-primary transition-all duration-300 hover:shadow-[0_0_35px_rgba(245,158,11,0.25)] flex flex-col h-full" data-testid={`card-project-${idx}`}>
+                <div key={idx} className="group bg-card/70 backdrop-blur-md border border-border p-6 rounded-2xl hover:border-primary transition-all duration-300 hover:shadow-[0_0_35px_rgba(245,158,11,0.25)] flex flex-col" data-testid={`card-project-${idx}`}>
+                  {proj.coverImage && (
+                    <img src={proj.coverImage} alt={proj.title} className="w-full h-48 object-cover rounded-xl mb-4" />
+                  )}
                   <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{proj.title}</h3>
                   <p className="text-sm font-medium text-primary/80 mb-4">{proj.subtitle}</p>
-                  <p className="text-muted-foreground mb-6 flex-grow text-sm leading-relaxed">{proj.desc}</p>
-                  <div className="flex flex-wrap gap-2 mt-auto">
+                  <p className="text-muted-foreground mb-6 text-sm leading-relaxed">{proj.desc}</p>
+                  <div className="flex flex-wrap gap-2">
                     {proj.tools.map((tool) => (
                       <span key={tool} className="px-3 py-1 bg-secondary/80 text-xs rounded-full text-primary border border-primary/20 hover:border-primary/60 transition-colors">
                         {tool}
                       </span>
                     ))}
                   </div>
+                  {proj.images && (
+                    <div className="mt-4">
+                      <button
+                        onClick={() => setExpandedGalleryIdx(expandedGalleryIdx === idx ? null : idx)}
+                        className="flex items-center gap-2 text-sm text-primary hover:text-primary/70 transition-colors font-medium"
+                      >
+                        <span>{expandedGalleryIdx === idx ? "▲ Show less" : `▼ View all ${proj.images.length} photos`}</span>
+                      </button>
+                      {expandedGalleryIdx === idx && (
+                        <div className="grid grid-cols-2 gap-2 mt-3">
+                          {proj.images.map((img, i) => (
+                            <a key={i} href={img} target="_blank" rel="noreferrer">
+                              <img src={img} alt={`Project photo ${i + 1}`} className="w-full rounded-lg object-cover hover:opacity-80 transition-opacity cursor-zoom-in" />
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
