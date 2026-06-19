@@ -561,10 +561,20 @@ export default function Home() {
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 {
-                  title: "MATLAB Orbit Determination",
-                  subtitle: "Course: MAE 182 – Spacecraft Guidance & Navigation, UCSD",
-                  desc: "Developed a batch least-squares orbit determination program in MATLAB that processed simulated range and range-rate measurements from three ground stations to estimate spacecraft position and velocity. Achieved millimeter-level accuracy in position estimation through iterative statistical refinement.",
-                  tools: ["MATLAB", "Orbital Mechanics", "Batch Estimation", "Linear Algebra"]
+                  title: "Batch Least-Squares Orbit Determination",
+                  subtitle: "MAE 182 – Spacecraft GNC, UCSD | Apr 2026 – Jun 2026",
+                  desc: "Implemented an iterative batch least-squares estimator in MATLAB that processes range and range-rate observations from 3 ground stations over a 5-hour arc to estimate an 18-state vector: spacecraft position & velocity, gravitational parameter μ, J2 oblateness coefficient, drag coefficient CD, and station location biases. Converges to millimeter-level position accuracy in 5 iterations with full 1-σ covariance ellipsoid output.",
+                  tools: ["MATLAB", "Orbital Mechanics", "Batch Estimation", "STM Propagation", "Covariance Analysis"],
+                  report: "/reports/mae182-batch-report.pdf",
+                  github: "https://github.com/zeinrady1/MAE182-Orbit-Determination/tree/main/batch-least-squares"
+                },
+                {
+                  title: "Sequential Orbit Determination (EKF)",
+                  subtitle: "MAE 182 – Spacecraft GNC, UCSD | Final Exam Project, Jun 2026",
+                  desc: "Implemented a sequential Extended Kalman Filter in MATLAB for the same 18-state orbit determination problem. Processes observations one at a time with segment-by-segment STM propagation via ode45. Uses the Joseph-form covariance update for numerical stability and back-propagates to t₀ after convergence. Validates against the batch solution via 1-σ error ellipsoid comparison.",
+                  tools: ["MATLAB", "Extended Kalman Filter", "Numerical Integration", "Statistical Estimation", "Joseph Form"],
+                  report: "/reports/mae182-ekf-report.pdf",
+                  github: "https://github.com/zeinrady1/MAE182-Orbit-Determination/tree/main/sequential-ekf"
                 },
                 {
                   title: "High-Powered Rocket – Proxima (RPL @ UCSD)",
@@ -634,6 +644,20 @@ export default function Home() {
                       </span>
                     ))}
                   </div>
+                  {(proj.report || proj.github) && (
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {proj.report && (
+                        <a href={proj.report} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-primary/40 text-primary hover:bg-primary/10 hover:border-primary transition-all">
+                          <FileText className="w-3.5 h-3.5" /> View Report
+                        </a>
+                      )}
+                      {proj.github && (
+                        <a href={proj.github} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-white hover:border-white/40 transition-all">
+                          <Github className="w-3.5 h-3.5" /> View Code
+                        </a>
+                      )}
+                    </div>
+                  )}
                   {proj.images && (
                     <div className="mt-4">
                       <button
