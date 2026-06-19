@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Linkedin, Download, Send, Github } from "lucide-react";
+import { Mail, Linkedin, Download, Send, Github, FileText, Phone } from "lucide-react";
 
 const Starfield = () => {
   const [stars, setStars] = useState<{ id: number; x: number; y: number; size: number; duration: number }[]>([]);
@@ -321,45 +321,89 @@ export default function Home() {
 
       <main>
         {/* Hero */}
-        <section className="relative min-h-screen flex items-center justify-center pt-16 z-10">
-          <div className="container relative text-center px-4">
-            <motion.h1
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9 }}
-              className="text-5xl md:text-8xl font-bold text-white mb-6 drop-shadow-[0_0_20px_rgba(245,158,11,0.3)] tracking-tight"
-            >
-              Zein Rady
-            </motion.h1>
-            <motion.h2
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.2 }}
-              className="text-xl md:text-3xl font-medium text-primary mb-6"
-            >
-              Aerospace Engineering Student | Astrodynamics & GNC
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.4 }}
-              className="max-w-2xl mx-auto text-lg text-muted-foreground mb-10"
-            >
-              Pursuing spacecraft guidance, navigation, and orbital mechanics with a focus on real-world mission applications.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.6 }}
-              className="flex justify-center gap-4 flex-wrap"
-            >
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(245,158,11,0.5)]" data-testid="button-view-work">
-                <a href="#projects">View My Work</a>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" data-testid="button-contact">
-                <a href="#contact">Contact Me</a>
-              </Button>
-            </motion.div>
+        <section className="relative min-h-screen flex items-center pt-16 z-10">
+          <div className="container relative px-4 mx-auto">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+
+              {/* Left column */}
+              <div>
+                <motion.h1
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.9 }}
+                  className="text-5xl md:text-7xl font-bold text-white mb-3 drop-shadow-[0_0_20px_rgba(245,158,11,0.3)] tracking-tight"
+                >
+                  Zein Rady
+                </motion.h1>
+                <motion.p
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.9, delay: 0.15 }}
+                  className="text-xl md:text-2xl font-semibold text-primary mb-1"
+                >
+                  University of California, San Diego
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.9, delay: 0.25 }}
+                  className="text-lg text-muted-foreground mb-8"
+                >
+                  Aerospace Engineering · Astrodynamics &amp; GNC
+                </motion.p>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.9, delay: 0.4 }}
+                  className="grid grid-cols-2 gap-3"
+                >
+                  <a href="#" className="flex items-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
+                    <FileText className="w-5 h-5 text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Resume</p>
+                      <p className="text-sm font-semibold text-white group-hover:text-primary transition-colors">View Resume</p>
+                    </div>
+                  </a>
+                  <a href="mailto:radyzein2003@gmail.com" className="flex items-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
+                    <Mail className="w-5 h-5 text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Email</p>
+                      <p className="text-sm font-semibold text-white group-hover:text-primary transition-colors">radyzein2003@gmail.com</p>
+                    </div>
+                  </a>
+                  <a href="tel:9495016098" className="flex items-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
+                    <Phone className="w-5 h-5 text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">Phone</p>
+                      <p className="text-sm font-semibold text-white group-hover:text-primary transition-colors">(949) 501-6098</p>
+                    </div>
+                  </a>
+                  <a href="https://linkedin.com/in/zein-rady-a3475227b" target="_blank" rel="noreferrer" className="flex items-center gap-3 bg-card/70 backdrop-blur-md border border-border p-4 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
+                    <Linkedin className="w-5 h-5 text-primary shrink-0" />
+                    <div>
+                      <p className="text-xs text-muted-foreground">LinkedIn</p>
+                      <p className="text-sm font-semibold text-white group-hover:text-primary transition-colors">LinkedIn Profile</p>
+                    </div>
+                  </a>
+                </motion.div>
+              </div>
+
+              {/* Right column — About Me card */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.9, delay: 0.5 }}
+              >
+                <div className="bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl hover:border-primary/50 transition-colors duration-500">
+                  <h2 className="text-2xl font-bold text-white mb-4">About Me</h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    I'm a junior at UC San Diego studying Aerospace Engineering with a specialization in Astrodynamics and Space Applications (GPA 3.70). My focus is on spacecraft guidance, navigation, and control, working toward a career in astrodynamics at organizations like NASA or SpaceX. I bring hands-on experience in CAD modeling, FEA simulation, embedded systems, and orbital mechanics research, alongside leadership roles in student engineering organizations.
+                  </p>
+                </div>
+              </motion.div>
+
+            </div>
           </div>
         </section>
 
