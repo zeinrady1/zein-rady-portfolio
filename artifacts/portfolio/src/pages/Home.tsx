@@ -264,7 +264,6 @@ const EarthScene = () => {
 
 const Navbar = () => {
   const navLinks = [
-    { name: "About", href: "#about" },
     { name: "Education", href: "#education" },
     { name: "Experience", href: "#experience" },
     { name: "Projects", href: "#projects" },
@@ -296,7 +295,7 @@ const Navbar = () => {
 };
 
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 flex items-center gap-4">
+  <h2 className="text-4xl md:text-5xl font-bold text-white mb-12 flex items-center gap-4">
     <span className="h-px bg-primary w-12 shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
     {children}
   </h2>
@@ -429,23 +428,6 @@ export default function Home() {
 
             </div>
           </div>
-        </section>
-
-        {/* About */}
-        <section id="about" className="py-24 relative z-10 container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <SectionHeading>About Me</SectionHeading>
-            <div className="bg-card/70 backdrop-blur-md border border-border p-8 md:p-12 rounded-2xl shadow-xl hover:border-primary/50 transition-colors duration-500">
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                I'm a junior at UC San Diego studying Aerospace Engineering with a specialization in Astrodynamics and Space Applications (GPA 3.70). My focus is on spacecraft guidance, navigation, and control, and I'm working toward a career in astrodynamics at organizations like NASA or SpaceX. I bring hands-on experience in CAD modeling, FEA simulation, embedded systems, and orbital mechanics research, alongside leadership roles in student engineering organizations.
-              </p>
-            </div>
-          </motion.div>
         </section>
 
         {/* Education */}
