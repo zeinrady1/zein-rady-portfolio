@@ -768,8 +768,8 @@ export default function Home() {
             </div>
 
             <form ref={contactFormRef} onSubmit={handleContactSubmit} className="space-y-4 bg-card/70 backdrop-blur-md border border-border p-8 rounded-2xl">
-              <Input name="user_name" placeholder="Name" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-name" />
-              <Input name="user_email" type="email" placeholder="Email" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-email" />
+              <Input name="name" placeholder="Name" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-name" />
+              <Input name="email" type="email" placeholder="Email" required className="bg-secondary/50 border-border/50 focus-visible:ring-primary" data-testid="input-email" />
               <Textarea name="message" placeholder="Message" required rows={5} className="bg-secondary/50 border-border/50 focus-visible:ring-primary resize-none" data-testid="textarea-message" />
               <Button type="submit" disabled={sending} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_25px_rgba(245,158,11,0.6)]" data-testid="button-submit">
                 <Send className="w-4 h-4 mr-2" /> {sending ? "Sending…" : "Send Message"}
