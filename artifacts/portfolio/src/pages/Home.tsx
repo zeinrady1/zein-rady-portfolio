@@ -525,12 +525,6 @@ export default function Home() {
                   date: "Feb 2023 – Jun 2024",
                   desc: "Developed and executed targeted campaigns across Instagram, Facebook, and TikTok, driving engagement and expanding brand presence. Used analytics to refine content strategy aligned with brand values. Collaborated with the creative team as Clothing Design Assistant, contributing input on new collections, materials, and aesthetics."
                 },
-                {
-                  title: "Courtesy Clerk",
-                  org: "Ralphs Grocery Company",
-                  date: "Jun 2020 – Nov 2022",
-                  desc: "Delivered efficient customer service while managing grocery bagging, cart retrieval, and assistance with large items. Supported daily store operations through product restocking, delivery coordination, and maintaining a clean, organized workspace."
-                }
               ].map((exp, idx) => (
                 <div key={idx} className="relative pl-8 md:pl-12" data-testid={`timeline-experience-${idx}`}>
                   <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-background border-2 border-primary shadow-[0_0_12px_rgba(245,158,11,1)]" />
