@@ -400,9 +400,6 @@ export default function Home() {
               transition={{ duration: 0.9, delay: 0.5 }}
               className="flex flex-wrap gap-3 justify-center sm:justify-start"
             >
-              <span className="flex items-center gap-2 bg-card/70 backdrop-blur-md border border-border px-5 py-3 rounded-xl text-sm font-semibold text-white">
-                🇺🇸 US Citizen
-              </span>
               <a href="/resume.html" target="_blank" rel="noreferrer" className="flex items-center gap-2 bg-card/70 backdrop-blur-md border border-border px-5 py-3 rounded-xl hover:border-primary transition-all hover:shadow-[0_0_15px_rgba(245,158,11,0.2)] group">
                 <FileText className="w-4 h-4 text-primary" />
                 <span className="text-sm font-semibold text-white group-hover:text-primary transition-colors">Resume</span>
