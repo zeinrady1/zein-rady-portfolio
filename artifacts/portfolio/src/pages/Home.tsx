@@ -477,7 +477,7 @@ export default function Home() {
                   {edu.certImage && (
                     <div className="mt-4">
                       <a href={edu.certLink} target="_blank" rel="noreferrer" className="inline-block group/cert">
-                        <img src={edu.certImage} alt="SolidWorks Certificate" className="max-h-72 rounded-lg border border-border/50 group-hover/cert:opacity-90 transition-opacity cursor-pointer" />
+                        <img src={edu.certImage} alt="SolidWorks Certificate" className="max-h-36 rounded-lg border border-border/50 group-hover/cert:opacity-90 transition-opacity cursor-pointer" />
                         <p className="text-xs text-muted-foreground mt-1 group-hover/cert:text-primary transition-colors">Click to view full certificate</p>
                       </a>
                     </div>
@@ -532,7 +532,7 @@ export default function Home() {
               ].map((exp, idx) => (
                 <div key={idx} className="relative pl-8 md:pl-12" data-testid={`timeline-experience-${idx}`}>
                   <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-background border-2 border-primary shadow-[0_0_12px_rgba(245,158,11,1)]" />
-                  <div className="bg-card/80 backdrop-blur-md border border-border/60 rounded-xl p-4">
+                  <div className="bg-card/80 backdrop-blur-md border border-border/60 rounded-xl p-4 hover:border-primary hover:shadow-[0_0_35px_rgba(245,158,11,0.25)] transition-all duration-300">
                     <h3 className="text-xl font-bold text-white">{exp.title}</h3>
                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 mb-2">
                       <span className="text-primary font-medium">{exp.org}</span>
