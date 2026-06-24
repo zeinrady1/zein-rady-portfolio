@@ -287,9 +287,11 @@ const Navbar = () => {
               {link.name}
             </a>
           ))}
-          <Button variant="outline" className="ml-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_20px_rgba(245,158,11,0.6)]">
-            <Download className="w-4 h-4 mr-2" /> Resume
-          </Button>
+          <a href="/resume.pdf" target="_blank" rel="noreferrer">
+            <Button variant="outline" className="ml-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_20px_rgba(245,158,11,0.6)]">
+              <Download className="w-4 h-4 mr-2" /> Resume
+            </Button>
+          </a>
         </div>
       </div>
     </nav>
