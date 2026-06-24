@@ -639,7 +639,14 @@ export default function Home() {
               ].map((proj, idx) => (
                 <div key={idx} className="group bg-card/70 backdrop-blur-md border border-border p-6 rounded-2xl hover:border-primary transition-all duration-300 hover:shadow-[0_0_35px_rgba(245,158,11,0.25)] flex flex-col" data-testid={`card-project-${idx}`}>
                   {proj.coverImage && (
-                    <img src={proj.coverImage} alt={proj.title} className="w-full h-48 object-cover rounded-xl mb-4" />
+                    proj.images
+                      ? <img
+                          src={proj.coverImage}
+                          alt={proj.title}
+                          className="w-full h-48 object-cover rounded-xl mb-4 cursor-pointer hover:opacity-85 transition-opacity"
+                          onClick={() => { setGalleryImages(proj.images!); setGalleryTitle(proj.title); setGalleryOpen(true); }}
+                        />
+                      : <img src={proj.coverImage} alt={proj.title} className="w-full h-48 object-cover rounded-xl mb-4" />
                   )}
                   <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{proj.title}</h3>
                   <p className="text-sm font-medium text-primary/80 mb-4">{proj.subtitle}</p>
@@ -705,7 +712,7 @@ export default function Home() {
                 <h3 className="text-xl font-bold text-white mb-6">Soft Skills</h3>
                 <div className="flex flex-wrap gap-3">
                   {["Leadership", "Problem Solving", "Critical Thinking", "Cross-functional Collaboration", "Analytical Problem-Solving", "Attention to Detail", "Communication", "Adaptability", "Time Management", "Team Coordination", "Teamwork", "Public Speaking", "Creative Collaboration", "Multitasking", "Organization", "Emotional Intelligence"].map((skill) => (
-                    <span key={skill} className="px-4 py-2 bg-secondary/80 text-sm rounded-lg text-white border border-border hover:border-white/40 transition-all cursor-default" data-testid={`tag-softskill-${skill}`}>
+                    <span key={skill} className="px-4 py-2 bg-secondary/80 text-sm rounded-lg text-white border border-border hover:border-white/40 hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] transition-all cursor-default" data-testid={`tag-softskill-${skill}`}>
                       {skill}
                     </span>
                   ))}
