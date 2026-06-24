@@ -66,11 +66,13 @@ const EarthScene = () => {
   const angleRad = (scrollAngle * Math.PI) / 180;
   const rocketX = Math.cos(angleRad) * orbitRx;
   const rocketY = Math.sin(angleRad) * orbitRy;
-  const tangentAngle = Math.atan2(
-    -orbitRy * Math.cos(angleRad),
-    orbitRx * -Math.sin(angleRad)
-  );
-  const rocketDeg = (tangentAngle * 180) / Math.PI;
+  // Velocity vector of the orbit: d/dt of (Rx·cos t, Ry·sin t)
+  // vx = -Rx·sin t,  vy = Ry·cos t
+  // CSS rotate(θ): 0° = nose up. To point nose in direction (vx, vy):
+  //   θ = atan2(vx, -vy)
+  const vx = -orbitRx * Math.sin(angleRad);
+  const vy =  orbitRy * Math.cos(angleRad);
+  const rocketDeg = Math.atan2(vx, -vy) * (180 / Math.PI);
 
   return (
     <div className="fixed inset-0 z-1 pointer-events-none flex items-center justify-center">
@@ -200,7 +202,7 @@ const EarthScene = () => {
         >
           <div
             style={{
-              transform: `rotate(${rocketDeg + 90}deg)`,
+              transform: `rotate(${rocketDeg}deg)`,
               transformOrigin: "center center",
               display: "flex",
               flexDirection: "column",
