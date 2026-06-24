@@ -462,7 +462,7 @@ export default function Home() {
                   certLink: "/solidworks-cert.pdf",
                 }
               ].map((edu, idx) => (
-                <div key={idx} className="bg-card/70 backdrop-blur-md border border-border p-6 rounded-xl hover:border-primary/50 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] transition-all duration-300" data-testid={`card-education-${idx}`}>
+                <div key={idx} className="bg-card/70 backdrop-blur-md border border-border p-6 rounded-xl hover:border-primary hover:shadow-[0_0_35px_rgba(245,158,11,0.25)] transition-all duration-300" data-testid={`card-education-${idx}`}>
                   <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 mb-4">
                     <div>
                       <h3 className="text-xl font-bold text-white">{edu.title}</h3>
